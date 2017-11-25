@@ -1,0 +1,2 @@
+* images/emacs/conf/
+  This directory will be exploded into =~= while the Emacs image is built. You should include Emacs configuration here.

@@ -1,0 +1,8 @@
+* images/conf/
+  This directory will be exploded into =~= for every image spun up as part of the mobile-suit. You might want to include:
+  
+  - =.ssh/=
+  - =.gitconfig=
+
+** Keys
+   =*.gpg= files are decrypted using GnuPG before being propagated to images, so you don't need to worry about accidentally committing private keys. Just make sure you GnuPG encrypt them!

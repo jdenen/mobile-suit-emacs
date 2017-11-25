@@ -1,0 +1,5 @@
+* README
+  Use this space for files that should not be checked into Git.
+  
+** Private keys
+   Files ending with =.asc= will be imported into the Emacs image's GnuPG keyring.
