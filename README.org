@@ -1,0 +1,2 @@
+* mobile-suit-emacs
+A fully containerized Emacs environment, because I don't want to install anything on a development machine except Docker.
