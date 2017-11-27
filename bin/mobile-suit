@@ -3,7 +3,6 @@
 function usage() {
     echo ""
     echo "Usage: ${0} [up]"
-    echo "  up Spin up mobile-suit."
     echo ""
     exit 0
 }
@@ -30,6 +29,8 @@ function up() {
 
 if [[ ${OSTYPE} = darwin* ]]; then
     SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
+
+    if [ -z ${1} ]; then usage; fi
 
     while (($# > 0)); do
         opt="${1}"

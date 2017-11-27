@@ -1,13 +1,11 @@
 ---
 version: '3'
-mobile_suit_volumes: &volumes
-  - git:/home/emacs/code
 services:
   base:
     build:
       context: ./images
       dockerfile: base/Dockerfile
-      entrypoint: sleep 1
+    entrypoint: sleep 1
   emacs:
     build:
       context: ./images
@@ -18,18 +16,8 @@ services:
       - TZ=EST
     stdin_open: true
     tty: true
-    volumes: *volumes
-  groovy:
-    build:
-      context: ./images
-      dockerfile: groovy/Dockerfile
-    container_name: groovy
-    ports:
-      - "22"
-    stdin_open: true
-    tty: true
-    volumes: *volumes
-
+    volumes:
+      - git:/home/emacs/code
 volumes:
   git:
     external: true
