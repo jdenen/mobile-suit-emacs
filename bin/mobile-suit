@@ -1,0 +1,48 @@
+#!/bin/bash
+
+function usage() {
+    echo ""
+    echo "Usage: ${0} [up]"
+    echo "  up Spin up mobile-suit."
+    echo ""
+    exit 0
+}
+
+function up() {
+    tz="$(sudo systemsetup -gettimezone | cut -d' ' -f3)"
+    ip="$(ifconfig en0 | grep "inet " | cut -d" " -f2)"
+    defaults write org.macosforge.xquartz.X11 nolisten_tcp -boolean false
+
+    if [ -z "$(ps -ef | grep XQuartz | grep -v grep)" ]; then
+        open -a XQuartz
+        xhost + ${ip}:0
+    fi
+
+    (cd ${SCRIPT_DIR}/..; docker-compose up -d --build)
+
+    docker exec -it           \
+           -u spacemacser     \
+           -e DISPLAY=${ip}:0 \
+           -e TZ=${tz}        \
+           spacemacs          \
+           emacs --load=/lisp/mobile-suit.el
+}
+
+if [[ ${OSTYPE} = darwin* ]]; then
+    SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
+
+    while (($# > 0)); do
+        opt="${1}"
+        shift
+
+        case "${opt}" in
+            up)
+                up
+                exit 0
+                ;;
+            *)
+                usage
+                ;;
+        esac
+    done
+fi

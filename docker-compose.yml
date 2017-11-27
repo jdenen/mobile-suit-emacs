@@ -1,29 +1,35 @@
 ---
 version: '3'
-
-mobile_suit_context: &build_context ./images
 mobile_suit_volumes: &volumes
   - git:/home/emacs/code
-mobile_suit_images: &images
-
 services:
   base:
     build:
-      context: *build_context
+      context: ./images
       dockerfile: base/Dockerfile
       entrypoint: sleep 1
   emacs:
     build:
-      context: *build_context
+      context: ./images
       dockerfile: emacs/Dockerfile
     container_name: emacs
     environment:
       - DISPLAY=$ip:0
       - TZ=EST
-    links: *images
     stdin_open: true
     tty: true
     volumes: *volumes
+  groovy:
+    build:
+      context: ./images
+      dockerfile: groovy/Dockerfile
+    container_name: groovy
+    ports:
+      - "22"
+    stdin_open: true
+    tty: true
+    volumes: *volumes
+
 volumes:
   git:
     external: true
