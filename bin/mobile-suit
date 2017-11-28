@@ -32,6 +32,10 @@ function up() {
            emacs --load=/lisp/mobile-suit.el
 }
 
+function down() {
+    (cd ${SCRIPT_DIR}/..; docker-compose down ${@})
+}
+
 if [[ ${OSTYPE} = darwin* ]]; then
     SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
@@ -42,6 +46,10 @@ if [[ ${OSTYPE} = darwin* ]]; then
         shift
 
         case "${opt}" in
+            down)
+                down
+                exit 0
+                ;;
             up)
                 up
                 exit 0
