@@ -68,6 +68,15 @@ Decrypted file name truncates .gpg extension."
       (shell-command "sudo chown spacemacser:emacs code")))
   (message "[mobile-suit] ...done"))
 
+(defun mobile-suit/-load-custom-lisp-scripts ()
+  "Load custom script files."
+  (message "[mobile-suit] loading custom /lisp scripts...")
+  (let ((custom-scripts (remove "/lisp/mobile-suit.el"
+                                (directory-files "/lisp" t "\.el$"))))
+    (dolist (script custom-scripts)
+      (load-file script)))
+  (message "[mobile-suit] ...done"))
+
 (defun mobile-suit/init ()
   "Configure the mobile-suit environment."
   (progn
@@ -77,7 +86,8 @@ Decrypted file name truncates .gpg extension."
     (mobile-suit/-decrypt-ssh-keys)
     (mobile-suit/-copy-ssh-keys-to-images)
     (mobile-suit/-set-tramp-properties)
-    (mobile-suit/-chown-image-code-volumes)))
+    (mobile-suit/-chown-image-code-volumes)
+    (mobile-suit/-load-custom-lisp-scripts)))
 
 (eval-after-load 'mobile-suit
   (mobile-suit/init))
