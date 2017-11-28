@@ -1,6 +1,8 @@
 ---
 version: '3'
 services:
+  docker:
+    image: docker/docker:latest
   base:
     build:
       context: ./images
