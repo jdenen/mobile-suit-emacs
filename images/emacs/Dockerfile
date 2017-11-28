@@ -4,6 +4,7 @@ RUN groupadd ${GNAME} \
     && useradd -ms /bin/bash -d ${UHOME} -g ${GNAME} ${UNAME} \
     && apt-get update \
     && apt-get install sshpass \
+                       fonts-inconsolata \
     && apt autoremove
 
 COPY --chown=spacemacser:emacs conf ${UHOME}
