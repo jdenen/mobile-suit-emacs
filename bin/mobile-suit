@@ -1,0 +1,62 @@
+#!/bin/bash
+
+function usage() {
+    echo ""
+    echo "Usage: ${0} [up]"
+    echo ""
+    exit 0
+}
+
+function up() {
+    ip="$(ifconfig en0 | grep "inet " | cut -d" " -f2)"
+    defaults write org.macosforge.xquartz.X11 nolisten_tcp -boolean false
+
+    if [ -z "$(ps -ef | grep XQuartz | grep -v grep)" ]; then
+        open -a XQuartz
+        xhost + ${ip}:0
+    fi
+
+    (cd ${SCRIPT_DIR}/..; docker-compose up -d --build)
+    (cd ${SCRIPT_DIR}/..; docker cp ./private/ emacs:/tmp/private)
+
+    docker exec    \
+           -u root \
+           emacs   \
+           chown -R spacemacser:emacs /tmp/private
+
+    docker exec               \
+           -it                \
+           -u spacemacser     \
+           -e DISPLAY=${ip}:0 \
+           emacs              \
+           emacs --load=/lisp/mobile-suit.el
+}
+
+function down() {
+    (cd ${SCRIPT_DIR}/..; docker-compose down ${@})
+}
+
+if [[ ${OSTYPE} = darwin* ]]; then
+    SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
+
+    if [ -z ${1} ]; then usage; fi
+
+    while (($# > 0)); do
+        opt="${1}"
+        shift
+
+        case "${opt}" in
+            down)
+                down
+                exit 0
+                ;;
+            up)
+                up
+                exit 0
+                ;;
+            *)
+                usage
+                ;;
+        esac
+    done
+fi
