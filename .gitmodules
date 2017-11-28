@@ -1,0 +1,7 @@
+[submodule "images/emacs/conf/.emacs.d"]
+	path = images/emacs/conf/.emacs.d
+	url = git@github.com:jdenen/spacemacs
+	branch = my-develop
+[submodule "images/emacs/conf/.spacemacs.d"]
+	path = images/emacs/conf/.spacemacs.d
+	url = git@github.com:jdenen/.spacemacs.d
