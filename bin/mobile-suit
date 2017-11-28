@@ -8,7 +8,6 @@ function usage() {
 }
 
 function up() {
-    tz="$(sudo systemsetup -gettimezone | cut -d' ' -f3)"
     ip="$(ifconfig en0 | grep "inet " | cut -d" " -f2)"
     defaults write org.macosforge.xquartz.X11 nolisten_tcp -boolean false
 
@@ -18,12 +17,18 @@ function up() {
     fi
 
     (cd ${SCRIPT_DIR}/..; docker-compose up -d --build)
+    (cd ${SCRIPT_DIR}/..; docker cp ./private/ emacs:/tmp/private)
 
-    docker exec -it           \
+    docker exec    \
+           -u root \
+           emacs   \
+           chown -R spacemacser:emacs /tmp/private
+
+    docker exec               \
+           -it                \
            -u spacemacser     \
            -e DISPLAY=${ip}:0 \
-           -e TZ=${tz}        \
-           spacemacs          \
+           emacs              \
            emacs --load=/lisp/mobile-suit.el
 }
 
