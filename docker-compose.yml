@@ -2,11 +2,13 @@
 version: '3'
 services:
   base:
+    image: mobile_suit_base
     build:
       context: ./images
       dockerfile: base/Dockerfile
     entrypoint: sleep 1
   emacs:
+    image: mobile_suit_emacs
     build:
       context: ./images
       dockerfile: emacs/Dockerfile
