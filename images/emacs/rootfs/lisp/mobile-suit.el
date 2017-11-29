@@ -29,6 +29,17 @@
       (epa-import-keys key)
       (delete-file key))))
 
+(defun mobile-suit/-disable-image-hostkey-checking ()
+  "Disable StrictHostKeyChecking for `mobile-suit/images'."
+  (mobile-suit/with-message "disabling StrictHostKeyChecking for images"
+    (with-temp-buffer
+      (dolist (image `,mobile-suit/images)
+        (insert (mapconcat (lambda (s) (format s image))
+                           '("\n" "Host %s" "  StrictHostKeyChecking no")
+                           "\n")))
+      (with-current-buffer (current-buffer)
+        (append-to-file nil nil "/home/emacs/.ssh/config")))))
+
 (defun mobile-suit/-copy-pub-key-to-images ()
   "Copy SSH pub key needed for `tramp' to `mobile-suite/images'."
   (mobile-suit/with-message "copying SSH pub key to images"
@@ -85,6 +96,7 @@ Decrypted file name truncates .gpg extension."
 (defun mobile-suit/-init ()
   "Configure the mobile-suit environment."
   (mobile-suit/-import-master-key)
+  (mobile-suit/-disable-image-hostkey-checking)
   (mobile-suit/-copy-pub-key-to-images)
   (mobile-suit/-decrypt-ssh-keys)
   (mobile-suit/-copy-ssh-keys-to-images)
