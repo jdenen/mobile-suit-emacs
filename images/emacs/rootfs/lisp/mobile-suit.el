@@ -7,7 +7,7 @@
 ;;; Code:
 (require 'tramp)
 
-(defvar mobile-suit/images '()
+(defvar mobile-suit/images '(groovy) ; FIXME
   "Images spun up with Emacs.")
 
 (defvar mobile-suit/master-key "/tmp/private/key.asc"

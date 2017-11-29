@@ -19,6 +19,15 @@ services:
     tty: true
     volumes:
       - git:/home/emacs/code
+  groovy:
+    image: mobile_suit_groovy
+    build:
+      context: ./images
+      dockerfile: groovy/Dockerfile
+    container_name: groovy
+    tty: true
+    volumes:
+      - git:/home/emacs/code
 volumes:
   git:
     external: true
