@@ -13,7 +13,6 @@ services:
     container_name: emacs
     environment:
       - DISPLAY=$ip:0
-      - TZ=EST
     stdin_open: true
     tty: true
     volumes:
